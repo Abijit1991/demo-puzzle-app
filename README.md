@@ -171,26 +171,69 @@ The `PuzzleController` handles operations related to puzzles, including displayi
 - **Purpose:** Displays the top scorer user details for all puzzles.
 - **Returns:** A view with the top scorers for all puzzles.
 
-## Contributing
+## Services Class
 
-If you want others to contribute to your project, include guidelines for how to contribute. For example:
+### PuzzleServices
 
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature-branch`).
-3. Make your changes and commit them (`git commit -am 'Add new feature'`).
-4. Push to the branch (`git push origin feature-branch`).
-5. Create a new Pull Request.
+The `PuzzleServices` class provides helper methods for handling puzzles and their responses. It includes functionality for retrieving puzzle details, validating responses, and calculating top scores.
 
-## License
+**Methods:**
 
-Specify the license under which the project is distributed. For example:
+#### `getPuzzleResponseDetails($puzzle)`
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+- **Purpose:** Retrieves the current puzzle word and its associated responses.
+- **Parameters:**
+  - `$puzzle`: The puzzle instance for which details are retrieved.
+- **Returns:** An array containing the current puzzle word and a collection of puzzle responses.
+
+#### `getAllPuzzleResponses($puzzleId)`
+
+- **Purpose:** Retrieves all responses for a given puzzle made by the authenticated user.
+- **Parameters:**
+  - `$puzzleId`: The ID of the puzzle for which responses are retrieved.
+- **Returns:** A collection of puzzle responses with selected fields.
+
+#### `getValidPuzzleResponseCount($puzzleResponses)`
+
+- **Purpose:** Counts the number of valid puzzle responses from a collection.
+- **Parameters:**
+  - `$puzzleResponses`: A collection of puzzle responses.
+- **Returns:** The number of valid puzzle responses.
+
+#### `getLatestValidRemainingPuzzleWord($puzzleId)`
+
+- **Purpose:** Retrieves the latest valid remaining puzzle word for a given puzzle and user.
+- **Parameters:**
+  - `$puzzleId`: The ID of the puzzle for which the remaining puzzle word is retrieved.
+- **Returns:** The remaining puzzle word from the latest valid response, or null if no valid responses exist.
+
+#### `validateResponse($response)`
+
+- **Purpose:** Validates a response by checking it against an external dictionary API.
+- **Parameters:**
+  - `$response`: The word or response to be validated.
+- **Returns:** True if the response is valid according to the API, false otherwise.
+
+#### `checkPuzzleWordWithResponse($puzzleWord = null, $response = null)`
+
+- **Purpose:** Checks if the given response matches the puzzle word and returns the result.
+- **Parameters:**
+  - `$puzzleWord`: The puzzle word to be matched against. Defaults to null.
+  - `$response`: The response to be checked. Defaults to null.
+- **Returns:** An array where the first element is a boolean indicating if the response matches the puzzle word, and the second element is the updated puzzle word.
+
+#### `showPuzzleTopperDetails($puzzleId)`
+
+- **Purpose:** Retrieves details of the top scorers for a given puzzle.
+- **Parameters:**
+  - `$puzzleId`: The ID of the puzzle for which top scorers are retrieved.
+- **Returns:** A collection of top scorers with their user IDs and total scores.
+
+#### `showTopperDetails()`
+
+- **Purpose:** Retrieves details of the top scorers based on valid puzzle responses.
+- **Returns:** A collection of top scorers with their user IDs, total scores, and puzzle counts.
 
 ## Acknowledgements
 
-Include any credits, references, or resources that were helpful in building the project.
-
----
-
-Feel free to customize this template based on your project's specifics!
+Thanks to the Free Dictionary API - https://dictionaryapi.dev/
