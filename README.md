@@ -131,6 +131,46 @@ Follow these steps to get the project up and running on your local machine:
 - **created_at** (timestamp): When the record was created.
 - **updated_at** (timestamp): When the record was last updated.
 
+## Controllers
+
+### PuzzleController
+
+The `PuzzleController` handles operations related to puzzles, including displaying puzzle details, saving responses, and showing top scorers.
+
+**Methods:**
+
+#### `__construct()`
+
+- **Purpose:** Ensures that only authenticated users can access the controller's methods.
+
+#### `showPuzzle(Request $request, $id)`
+
+- **Purpose:** Displays the details of a specific puzzle.
+- **Parameters:**
+  - `$request`: The HTTP request.
+  - `$id`: The ID of the puzzle to be displayed.
+- **Returns:** A view with the puzzle details and responses.
+
+#### `savePuzzleResponse(Request $request)`
+
+- **Purpose:** Handles the saving of a user's response to a puzzle.
+- **Parameters:**
+  - `$request`: The HTTP request containing the puzzle ID and user response.
+- **Returns:** Redirects to the puzzle details page with updated information.
+
+#### `showPuzzleToppers(Request $request, $id)`
+
+- **Purpose:** Displays the top scorer user details for a specific puzzle.
+- **Parameters:**
+  - `$request`: The HTTP request.
+  - `$id`: The ID of the puzzle to be displayed.
+- **Returns:** A view with the top scorers for the specified puzzle.
+
+#### `showToppersList()`
+
+- **Purpose:** Displays the top scorer user details for all puzzles.
+- **Returns:** A view with the top scorers for all puzzles.
+
 ## Contributing
 
 If you want others to contribute to your project, include guidelines for how to contribute. For example:
