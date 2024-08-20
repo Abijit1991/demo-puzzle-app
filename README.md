@@ -1,4 +1,4 @@
-# Project Name
+# Puzzle Management Application
 
 ## Overview
 
@@ -13,10 +13,9 @@ Create a puzzle management system with the following requirements:
 
 ## Requirements
 
-- PHP version: X.X.X
-- Laravel version: X.X.X
-- MySQL version: X.X.X
-- Node.js version: X.X.X (if applicable)
+- PHP version: >= 8.1
+- Laravel version: >= 10
+- Database: MySQL/PostgreSQL
 
 ## Installation
 
@@ -25,7 +24,7 @@ Follow these steps to get the project up and running on your local machine:
 1. **Clone the repository:**
 
     ```bash
-    git clone https://github.com/your-username/your-repo-name.git
+    git clone [https://github.com/your-username/your-repo-name.git](https://github.com/Abijit1991/demo-puzzle-app/ )](https://github.com/Abijit1991/demo-puzzle-app/)
     ```
 
 2. **Navigate to the project directory:**
