@@ -80,9 +80,56 @@ Follow these steps to get the project up and running on your local machine:
 
     Open your browser and go to `http://localhost:8000`.
 
-## Usage
+## Database Schema
 
-Provide examples and instructions on how to use the project. Include any specific commands or features users should know about.
+### 1. Puzzles
+
+**Description:** Stores information about puzzles.
+
+**Columns:**
+- **id** (integer, primary key, auto-increment): Unique identifier for the puzzle.
+- **puzzle_word** (string): The word used in the puzzle.
+- **created_at** (timestamp): When the record was created.
+- **updated_at** (timestamp): When the record was last updated.
+
+### 2. Puzzle Responses
+
+**Description:** Stores responses submitted by users for puzzles.
+
+**Columns:**
+- **id** (integer, primary key, auto-increment): Unique identifier for the response.
+- **puzzle_id** (integer, foreign key): References the `id` column in the `puzzles` table.
+- **user_id** (integer, foreign key): References the `id` column in the `users` table.
+- **response** (string): The user's response to the puzzle.
+- **is_valid** (boolean): Indicates whether the response is valid.
+- **score** (integer): Score associated with the response.
+- **remaining_puzzle_word** (string): The remaining puzzle word after the response.
+- **created_at** (timestamp): When the record was created.
+- **updated_at** (timestamp): When the record was last updated.
+
+### 3. Users
+
+**Description:** Stores user information.
+
+**Columns:**
+- **id** (integer, primary key, auto-increment): Unique identifier for the user.
+- **name** (string): The name of the user.
+- **email** (string, unique): The email address of the user.
+- **password** (string): The hashed password of the user.
+- **role_id** (integer, foreign key): References the `id` column in the `roles` table.
+- **created_at** (timestamp): When the record was created.
+- **updated_at** (timestamp): When the record was last updated.
+
+### 4. Roles
+
+**Description:** Stores user roles.
+
+**Columns:**
+- **id** (integer, primary key, auto-increment): Unique identifier for the role.
+- **name** (string): The name of the role.
+- **slug** (string): A URL-friendly version of the role name.
+- **created_at** (timestamp): When the record was created.
+- **updated_at** (timestamp): When the record was last updated.
 
 ## Contributing
 
