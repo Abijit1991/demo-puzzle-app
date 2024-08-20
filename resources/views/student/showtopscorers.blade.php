@@ -7,8 +7,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title">
-                            {{ __('Puzzle: #') }}
-                            <span class="text-primary">{{ $puzzle->id }}</span>
+                            {{ __('Puzzle Top Scores List') }}
                         </h5>
                     </div>
 
@@ -24,18 +23,11 @@
                                 <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                                     <ol class="breadcrumb">
                                         <li class="breadcrumb-item"><a href="{{ route('student.home') }}">Home</a></li>
-                                        <li class="breadcrumb-item active" aria-current="page">Puzzle Top Scores List</li>
+                                        <li class="breadcrumb-item active" aria-current="page">Puzzle Top Scores List </li>
                                     </ol>
                                 </nav>
                             </div>
                         </div>
-                        <hr />
-
-                        <h5 class="card-title">
-                            {{ __('Puzzle Word : ') }}
-                            <span class="text-primary">{{ $puzzle->puzzle_word }}</span>
-                        </h5>
-                        <hr />
 
                         <div class="row">
                             <div class="col-md-12">
@@ -45,6 +37,7 @@
                                             <th scope="col">#</th>
                                             <th scope="col">Username</th>
                                             <th scope="col">Email ID</th>
+                                            <th scope="col">Solved Puzzles Count</th>
                                             <th scope="col">Scores</th>
                                         </tr>
                                     </thead>
@@ -61,6 +54,11 @@
                                                     </td>
                                                     <td scope="row" class="text-primary text-bold">
                                                         {{ $topperDetail->user->email }}
+                                                    </td>
+                                                    <td scope="row">
+                                                        <span class="badge bg-primary">
+                                                            {{ $topperDetail->puzzle_count }}
+                                                        </span>
                                                     </td>
                                                     <td scope="row">
                                                         <span class="badge bg-success">

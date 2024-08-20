@@ -30,8 +30,8 @@ Route::middleware(['auth'])->prefix('student')->group(function () {
         ->name('student.showpuzzle');
     Route::post('/puzzle/response/submit', [Controllers\Student\PuzzleController::class, 'savePuzzleResponse'])
         ->name('student.save.puzzle.response');
-    Route::get('/puzzle/{puzzle_id}/toppers', [Controllers\Student\PuzzleController::class, 'showPuzzleToppers'])
+    Route::get('/puzzle/toppers/{puzzle_id}/', [Controllers\Student\PuzzleController::class, 'showPuzzleToppers'])
         ->name('student.showpuzzlestoppers');
-    Route::get('/puzzle/toppers', [Controllers\Student\PuzzleController::class, 'showToppers'])
-        ->name('student.showtoppers');
+    Route::get('/topperslist', [Controllers\Student\PuzzleController::class, 'showToppersList'])
+        ->name('student.topperslist');
 });

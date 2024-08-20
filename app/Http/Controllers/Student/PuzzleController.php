@@ -64,8 +64,14 @@ class PuzzleController extends Controller
     public function showPuzzleToppers($id)
     {
         $puzzle = Puzzle::find($id);
-        $puzzleTopperDetails = PuzzleServices::showTopperDetails($puzzle->id);
+        $puzzleTopperDetails = PuzzleServices::showPuzzleTopperDetails($puzzle->id);
 
         return view('student.showpuzzletopscorers', compact('puzzle', 'puzzleTopperDetails'));
+    }
+
+    public function showToppersList()
+    {
+        $puzzleTopperDetails = PuzzleServices::showTopperDetails();
+        return view('student.showtopscorers', compact('puzzleTopperDetails'));
     }
 }

@@ -6,25 +6,6 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <div class="card-title">
-                            <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-                                <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="{{ route('student.home') }}">Home</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Puzzle</li>
-                                </ol>
-                            </nav>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <br>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
                         <h5 class="card-title">
                             {{ __('Puzzle: #') }}
                             <span class="text-primary">{{ $puzzle->id }}</span>
@@ -37,6 +18,17 @@
                                 {{ session('status') }}
                             </div>
                         @endif
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                                    <ol class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="{{ route('student.home') }}">Home</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">Puzzle</li>
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
 
                         <h5 class="card-title">
                             {{ __('Puzzle Word : ') }}
