@@ -13,9 +13,9 @@ Create a puzzle management system with the following requirements:
 
 ## Requirements
 
-- PHP version: >= 8.1
-- Laravel version: >= 10
-- Database: MySQL/PostgreSQL
+- PHP version: **>= 8.1**
+- Laravel version: **>= 10**
+- Database: **MySQL/PostgreSQL**
 
 ## Installation
 
@@ -24,20 +24,22 @@ Follow these steps to get the project up and running on your local machine:
 1. **Clone the repository:**
 
     ```bash
-    git clone [https://github.com/your-username/your-repo-name.git](https://github.com/Abijit1991/demo-puzzle-app/ )](https://github.com/Abijit1991/demo-puzzle-app/)
+    git clone https://github.com/Abijit1991/demo-puzzle-app.git
     ```
 
 2. **Navigate to the project directory:**
 
     ```bash
-    cd your-repo-name
+    cd demo-puzzle-app
     ```
 
-3. **Install dependencies:**
+3. **Install dependencies & dump the autoload files:**
 
     ```bash
     composer install
     npm install
+    npm run build
+    composer dump-autoload
     ```
 
 4. **Copy the example environment file:**
@@ -53,7 +55,7 @@ Follow these steps to get the project up and running on your local machine:
     ```
 
 6. **Set up the database:**
-    - Create a new database in MySQL.
+    - Create a new database in MySQL/PostgreSQL.
     - Update your `.env` file with the database credentials.
 
 7. **Run database migrations:**
@@ -62,7 +64,7 @@ Follow these steps to get the project up and running on your local machine:
     php artisan migrate
     ```
 
-8. **Seed the database (optional):**
+8. **Seed the database:**
 
     ```bash
     php artisan db:seed
