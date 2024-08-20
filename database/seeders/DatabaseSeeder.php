@@ -5,6 +5,15 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
+/**
+ * DatabaseSeeder
+ *
+ * Default Seeder
+ *
+ * @author Abijit <abijit.a.1991@gmail.com>
+ *
+ * @version 1.0.1
+ */
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -12,11 +21,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        // Execute the following seeders.
+        $this->call([
+            RoleSeeder::class,
+            StudentSeeder::class,
+            PuzzleSeeder::class
+        ]);
     }
 }
