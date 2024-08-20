@@ -9,10 +9,20 @@ use App\Models\User;
 use App\Models\Role;
 use App\Traits\DisplaySeederMessageTrait;
 
+/**
+ * StudentSeeder
+ *
+ * Seed the user table with the provided data.
+ *
+ * @author Abijit <abijit.a.1991@gmail.com>
+ *
+ * @version 1.0.1
+ */
 class StudentSeeder extends Seeder
 {
     use DisplaySeederMessageTrait;
 
+    // Class properties
     public $maxUserCreateLimit;
     public $baseUserName;
     public $password;
@@ -24,23 +34,35 @@ class StudentSeeder extends Seeder
      */
     public function run(): void
     {
+        // Set the maximum number of users to create.
         $this->maxUserCreateLimit = 20;
+
+        // Set the base username prefix for the users.
         $this->baseUserName = 'demouser';
+
+        // Set the default password for the users.
         $this->password = 'Demo@123';
+
+        // Get the role ID for the demo users (assumed to be students).
         $this->roleId = $this->getRoleId();
+
+        // Set the default success message for the seeder.
         $this->displayMessage = $this->getDefaultSuccessMessage();
 
+        // Loop through the range and create or update the users.
         foreach (range(1, $this->maxUserCreateLimit) as $index) {
             $username = $this->generateStudentUserName($index);
 
             try {
+                // Create or update the user data in the database.
                 $this->createOrUpdateData($username);
             } catch (\Exception $e) {
+                // Handle any exceptions and update the display message accordingly.
                 $this->displayMessage = $this->handleException($e);
             }
         }
 
-        // Display a message.
+        // Display a message after seeding is complete.
         $this->displayMessage(config('constants.SEEDER_SUCCESS_MSG.STUDENT_SEEDER'));
     }
 
@@ -98,6 +120,7 @@ class StudentSeeder extends Seeder
      */
     public function createOrUpdateData(string $username): void
     {
+        // Use the `updateOrCreate` method to either update an existing user or create a new one.
         User::updateOrCreate(
             [
                 'email' => trim($username . '@demopuzzle.com')
