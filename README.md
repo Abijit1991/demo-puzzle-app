@@ -80,6 +80,11 @@ Follow these steps to get the project up and running on your local machine:
 
     Open your browser and go to `http://localhost:8000`.
 
+## Login Credentials
+
+- Email: **demouser01@demopuzzle.com**, **demouser02@demopuzzle.com**, **demouser03@demopuzzle.com**, ..... , **demouser20@demopuzzle.com**
+- Password: **Demo@123**
+
 ## Database Schema
 
 ### 1. Puzzles
