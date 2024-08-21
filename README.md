@@ -263,17 +263,15 @@ Follow these steps to run the unit testing
     ```bash
     vendor/bin/phpunit
     ```
-2. **Perform unit testing to a specific test script:**
+2. **Perform unit testing to a specific test script:** (replace `<unit_test_script_filename>` with the actual filename)
    ```bash
     vendor/bin/phpunit --filter=<unit_test_script_filename>
     ```
-3. **Perform unit testing to a specific test script method:**
+3. **Perform unit testing to a specific test script method:** (replace `<unit_test_script_filename>` & `<test_case_method_name>` with the actual filename and method name)
    ```bash
-    vendor/bin/phpunit --filter=<unit_test_script_filename>::<test_case_method_filename>
+    vendor/bin/phpunit --filter=<unit_test_script_filename>::<test_case_method_name>
     ```
-   
-
-    
+      
 
 ## Acknowledgements
 
