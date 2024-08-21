@@ -2,21 +2,22 @@
 
 namespace App\Services;
 
+use App\Models\Puzzle;
 use Illuminate\Support\Facades\Auth;
 use App\Models\PuzzleResponse;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\DB;
 
 /**
- * PuzzleServices
+ * PuzzleResponseServices
  *
  * Helper Service class.
  *
  * @author Abijit <abijit.a.1991@gmail.com>
  *
- * @version 1.0.1
+ * @version 1.0.3
  */
-class PuzzleServices
+class PuzzleResponseServices
 {
     /**
      * Retrieve the puzzle word and its associated responses.
@@ -25,10 +26,16 @@ class PuzzleServices
      *
      * @return array An array containing the current puzzle word and a collection of puzzle responses.
      */
-    public static function getPuzzleResponseDetails($puzzle)
+    public static function getPuzzleResponseDetails($puzzleId)
     {
-        // Retrieve all responses for the given puzzle.
-        $puzzleResponses = self::getAllPuzzleResponses($puzzle->id);
+        // Retrieve the details of a puzzle by its ID.
+        $puzzle = self::getPuzzleDetails($puzzleId);
+
+        // Retrieve all valid puzzle responses for the given puzzle.
+        $puzzleResponses = $puzzle->puzzleresponses()->where([
+            'user_id' => Auth::user()->id
+        ])->latest('id')
+            ->get(['response', 'is_valid', 'score', 'remaining_puzzle_word', 'updated_at']);
 
         // Determine the puzzle word based on the validation.
         $puzzleWord = !empty(count($puzzleResponses) && self::getValidPuzzleResponseCount($puzzleResponses))
@@ -37,26 +44,23 @@ class PuzzleServices
 
         // Return the data.
         return [
+            $puzzle,
             $puzzleWord,
             $puzzleResponses
         ];
     }
 
     /**
-     * Retrieve all responses for a given puzzle made by the authenticated user.
+     * Retrieve the details of a puzzle by its ID.
      *
-     * @param int $puzzleId The ID of the puzzle for which responses are retrieved.
+     * @param int $puzzleId The ID of the puzzle to retrieve.
      *
-     * @return \Illuminate\Database\Eloquent\Collection A collection of puzzle responses with selected fields.
+     * @return \App\Models\Puzzle|null The Puzzle model instance or null if not found.
      */
-    public static function getAllPuzzleResponses($puzzleId)
+    public static function getPuzzleDetails($puzzleId)
     {
         // Return the data.
-        return PuzzleResponse::where([
-            'puzzle_id' => $puzzleId,
-            'user_id' => Auth::user()->id
-        ])->latest('id')
-            ->get(['response', 'is_valid', 'score', 'remaining_puzzle_word', 'updated_at']);
+        return Puzzle::find($puzzleId);
     }
 
     /**
@@ -73,17 +77,54 @@ class PuzzleServices
     }
 
     /**
+     * Save a user's response to a puzzle.
+     *
+     * @param \Illuminate\Http\Request $request The incoming request containing the puzzle ID and user's response.
+     *
+     * @return void
+     */
+    public static function savePuzzleResponse($request)
+    {
+        // Retrieve the puzzle from the database using the provided ID.
+        $puzzle = self::getPuzzleDetails($request->input('puzzle_id'));
+
+        // Retrieve the user's response from the request.
+        $response = $request->input('response');
+
+        // Get the latest puzzle word.
+        $latestPuzzleWord = self::getLatestValidRemainingPuzzleWord($puzzle) ?? $puzzle->puzzle_word;
+
+        // Get the word match found status and puzzleword.
+        list($isMatchFound, $puzzleWord) = self::checkPuzzleWordWithResponse($latestPuzzleWord, $response);
+
+        // If a match is found, validate the response and save it in the database.
+        if ($isMatchFound) {
+            // Validate the response to check its correctness.
+            $isValid = self::validateResponse($request->input('response'));
+
+            // Create a record with the relevant details.
+            PuzzleResponse::create([
+                'puzzle_id' => $puzzle->id,
+                'user_id' => Auth::user()->id,
+                'response' => $response,
+                'is_valid' => $isValid,
+                'score' => $isValid ? strlen($response) : 0,
+                'remaining_puzzle_word' => $isValid ? $puzzleWord : $latestPuzzleWord
+            ]);
+        }
+    }
+
+    /**
      * Retrieve the latest valid remaining puzzle word for a given puzzle and user.
      *
-     * @param int $puzzleId The ID of the puzzle for which the remaining puzzle word is retrieved.
+     * @param mixed $puzzle The puzzle for which the remaining puzzle word is retrieved.
      *
      * @return string|null The remaining puzzle word from the latest valid response, or null if no valid responses exist.
      */
-    public static function getLatestValidRemainingPuzzleWord($puzzleId)
+    public static function getLatestValidRemainingPuzzleWord($puzzle)
     {
-        // Return the data.
-        return PuzzleResponse::where([
-            'puzzle_id' => $puzzleId,
+        // Return the data
+        return $puzzle->puzzleresponses()->where([
             'user_id' => Auth::user()->id,
             'is_valid' => true
         ])->latest('id')

@@ -7,7 +7,7 @@ use App\Models\Puzzle;
 use App\Models\PuzzleResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use App\Services\PuzzleServices;
+use App\Services\PuzzleResponseServices;
 use Illuminate\Support\Facades\Validator;
 
 /**
@@ -37,16 +37,16 @@ class PuzzleController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function showPuzzle(Request $request, $id)
+    public function showPuzzle(Request $request, $puzzleId)
     {
-        // Add to the request data for validation purposes.
-        $request->request->add([
-            'id' => $id
+        // Merge new input into the incoming request
+        $request->merge([
+            'id' => $puzzleId
         ]);
 
         // Validate the request data.
         $validator = Validator::make($request->all(), [
-            'id' => 'required|integer|exists:puzzles,id'
+            'id' => 'bail|required|integer|exists:puzzles,id'
         ]);
 
         // If validation fails, redirect the concerned page.
@@ -54,11 +54,8 @@ class PuzzleController extends Controller
             return redirect()->route('student.home');
         }
 
-        // Retrieve the puzzle from the database using the provided ID.
-        $puzzle = Puzzle::find($id);
-
         // Get the puzzle word and its associated responses using a service method.
-        list($puzzleWord, $puzzleResponses) = PuzzleServices::getPuzzleResponseDetails($puzzle);
+        list($puzzle, $puzzleWord, $puzzleResponses) = PuzzleResponseServices::getPuzzleResponseDetails($puzzleId);
 
         // Return the concerned view blade
         return view('student.showpuzzle', compact('puzzle', 'puzzleWord', 'puzzleResponses'));
@@ -71,12 +68,12 @@ class PuzzleController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse Redirects to the concerned page.
      */
-    public function savePuzzleResponse(Request $request)
+    public function savePuzzleResponse1(Request $request)
     {
         // Validate the request data.
         $validator = Validator::make($request->all(), [
-            'puzzle_id' => 'required|integer|exists:puzzles,id',
-            'response' => 'required|alpha'
+            'puzzle_id' => 'bail|required|integer|exists:puzzles,id',
+            'response' => 'bail|required|alpha'
         ]);
 
         // If validation fails, redirect to the concerned page.
@@ -91,15 +88,15 @@ class PuzzleController extends Controller
         $puzzle = Puzzle::find($request->input('puzzle_id'));
 
         // Get the latest puzzle word.
-        $latestPuzzleWord = PuzzleServices::getLatestValidRemainingPuzzleWord($puzzle->id) ?? $puzzle->puzzle_word;
+        $latestPuzzleWord = PuzzleResponseServices::getLatestValidRemainingPuzzleWord($puzzle->id) ?? $puzzle->puzzle_word;
 
         // Get the word match found status and puzzleword.
-        list($isMatchFound, $puzzleWord) = PuzzleServices::checkPuzzleWordWithResponse($latestPuzzleWord, $response);
+        list($isMatchFound, $puzzleWord) = PuzzleResponseServices::checkPuzzleWordWithResponse($latestPuzzleWord, $response);
 
         // If a match is found, validate the response and save it in the database.
         if ($isMatchFound) {
             // Validate the response to check its correctness.
-            $isValid = PuzzleServices::validateResponse($request->input('response'));
+            $isValid = PuzzleResponseServices::validateResponse($request->input('response'));
 
             // Create a record with the relevant details.
             PuzzleResponse::create([
@@ -117,6 +114,33 @@ class PuzzleController extends Controller
     }
 
     /**
+     * Handle the saving of a puzzle response.
+     *
+     * @param \Illuminate\Http\Request $request The HTTP request.
+     *
+     * @return \Illuminate\Http\RedirectResponse Redirects to the concerned page.
+     */
+    public function savePuzzleResponse(Request $request)
+    {
+        // Validate the request data.
+        $validator = Validator::make($request->all(), [
+            'puzzle_id' => 'bail|required|integer|exists:puzzles,id',
+            'response' => 'bail|required|alpha'
+        ]);
+
+        // If validation fails, redirect to the concerned page.
+        if ($validator->fails()) {
+            return redirect()->route('student.home');
+        }
+
+        // Save the puzzle response data.
+        PuzzleResponseServices::savePuzzleResponse($request);
+
+        // Redirect to the concerned page.
+        return redirect()->route('student.showpuzzle', ['puzzle_id' => $request->input('puzzle_id')]);
+    }
+
+    /**
      * Display the top scorer user details of a specific puzzle.
      *
      * @param \Illuminate\Http\Request $request The HTTP request.
@@ -124,16 +148,16 @@ class PuzzleController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function showPuzzleToppers(Request $request, $id)
+    public function showPuzzleToppers(Request $request, $puzzleId)
     {
-        // Add to the request data for validation purposes.
-        $request->request->add([
-            'id' => $id
+        // Merge new input into the incoming request
+        $request->merge([
+            'id' => $puzzleId
         ]);
 
         // Validate the request data.
         $validator = Validator::make($request->all(), [
-            'id' => 'required|integer|exists:puzzles,id'
+            'id' => 'bail|required|integer|exists:puzzles,id'
         ]);
 
         // If validation fails, redirect the concerned page.
@@ -142,26 +166,26 @@ class PuzzleController extends Controller
         }
 
         // Retrieve the puzzle from the database using the provided ID.
-        $puzzle = Puzzle::find($id);
+        $puzzle = PuzzleResponseServices::getPuzzleDetails($puzzleId);
 
         // Fetch the top scorers for the puzzle based on the provided ID.
-        $puzzleTopperDetails = PuzzleServices::showPuzzleTopperDetails($puzzle->id);
+        $puzzleTopperDetails = PuzzleResponseServices::showPuzzleTopperDetails($puzzle->id);
 
         // Return the concerned view blade.
         return view('student.showpuzzletopscorers', compact('puzzle', 'puzzleTopperDetails'));
     }
 
     /**
-     * Display the top scorer user details of all puzzles.
+     * Display the overall top scorer user details of the puzzles.
      *
      * @param \Illuminate\Http\Request $request The HTTP request.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function showToppersList()
+    public function showToppersList(Request $request)
     {
         // Fetch the top scorers for all the puzzle.
-        $puzzleTopperDetails = PuzzleServices::showTopperDetails();
+        $puzzleTopperDetails = PuzzleResponseServices::showTopperDetails();
 
         // Return the concerned view blade.
         return view('student.showtopscorers', compact('puzzleTopperDetails'));
