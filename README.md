@@ -112,6 +112,11 @@ Follow these steps to get the project up and running on your local machine:
 - **created_at** (timestamp): When the record was created.
 - **updated_at** (timestamp): When the record was last updated.
 
+**Indexes:**
+- **puzzle_id**
+- **user_id**
+- **is_valid**
+
 ### 3. Users
 
 **Description:** Stores user information.
@@ -124,6 +129,9 @@ Follow these steps to get the project up and running on your local machine:
 - **role_id** (integer, foreign key): References the `id` column in the `roles` table.
 - **created_at** (timestamp): When the record was created.
 - **updated_at** (timestamp): When the record was last updated.
+
+**Indexes:**
+- **role_id**
 
 ### 4. Roles
 
@@ -178,25 +186,25 @@ The `PuzzleController` handles operations related to puzzles, including displayi
 
 ## Services Class
 
-### PuzzleServices
+### PuzzleResponseServices
 
-The `PuzzleServices` class provides helper methods for handling puzzles and their responses. It includes functionality for retrieving puzzle details, validating responses, and calculating top scores.
+The `PuzzleResponseServices` class provides helper methods for handling puzzles and their responses. It includes functionality for retrieving puzzle details, validating responses, and calculating top scores.
 
 **Methods:**
 
-#### `getPuzzleResponseDetails($puzzle)`
+#### `getPuzzleResponseDetails($puzzleId)`
 
 - **Purpose:** Retrieves the current puzzle word and its associated responses.
 - **Parameters:**
-  - `$puzzle`: The puzzle instance for which details are retrieved.
+  - `$puzzleId`: The ID of the puzzle to retrieve.
 - **Returns:** An array containing the current puzzle word and a collection of puzzle responses.
 
-#### `getAllPuzzleResponses($puzzleId)`
+#### `getPuzzleDetails($puzzleId)`
 
-- **Purpose:** Retrieves all responses for a given puzzle made by the authenticated user.
+- **Purpose:** Retrieve the details of a puzzle by its ID.
 - **Parameters:**
   - `$puzzleId`: The ID of the puzzle for which responses are retrieved.
-- **Returns:** A collection of puzzle responses with selected fields.
+- **Returns:** The Puzzle model instance or null if not found.
 
 #### `getValidPuzzleResponseCount($puzzleResponses)`
 
@@ -204,6 +212,13 @@ The `PuzzleServices` class provides helper methods for handling puzzles and thei
 - **Parameters:**
   - `$puzzleResponses`: A collection of puzzle responses.
 - **Returns:** The number of valid puzzle responses.
+
+#### `savePuzzleResponse($request)`
+
+- **Purpose:** Save a user's response to a puzzle.
+- **Parameters:**
+  - `$request`: The incoming request.
+- **Returns:** No returning.  
 
 #### `getLatestValidRemainingPuzzleWord($puzzleId)`
 
