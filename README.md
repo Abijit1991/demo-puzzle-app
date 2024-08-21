@@ -254,6 +254,27 @@ The `PuzzleResponseServices` class provides helper methods for handling puzzles 
 - **Purpose:** Retrieves details of the top scorers based on valid puzzle responses.
 - **Returns:** A collection of top scorers with their user IDs, total scores, and puzzle counts.
 
+## Instructions for Running Unit Tests
+
+Follow these steps to run the unit testing
+
+1. **Perform unit testing for all test scripts:**
+
+    ```bash
+    vendor/bin/phpunit
+    ```
+2. **Perform unit testing to a specific test script:**
+   ```bash
+    vendor/bin/phpunit --filter=<unit_test_script_filename>
+    ```
+3. **Perform unit testing to a specific test script method:**
+   ```bash
+    vendor/bin/phpunit --filter=<unit_test_script_filename>::<test_case_method_filename>
+    ```
+   
+
+    
+
 ## Acknowledgements
 
 Thanks to the Free Dictionary API - https://dictionaryapi.dev/
