@@ -22,7 +22,7 @@ class PuzzleResponseServices
     /**
      * Retrieve the puzzle word and its associated responses.
      *
-     * @param \App\Models\Puzzle $puzzle The puzzle instance for which details are retrieved.
+     * @param int $puzzleId The ID of the puzzle to retrieve.
      *
      * @return array An array containing the current puzzle word and a collection of puzzle responses.
      */
