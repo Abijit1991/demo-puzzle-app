@@ -3,9 +3,9 @@
 ## Overview
 
 Create a puzzle management system with the following requirements:
-1. Each puzzle is defined by a random string of letters that is presented to the user, for example "dgeftoikbvxuaa". The string is guaranteed to allow the construction of at least one valid English word.
+1. Each puzzle is defined by a random string of letters that is presented to the user, for example "**dgeftoikbvxuaa**". The string is guaranteed to allow the construction of at least one valid English word.
 2. Students attempt to create English words using the letters provided in the string. Each letter used scores one point. For example fox would score 3 points.
-3. Letters can only be used as many times as they appear in the string. Once a letter is used in a submitted word, it cannot be used in subsequent resubmissions by the same student. If a student used fox they would have dgetikbvuaa left to play with.
+3. Letters can only be used as many times as they appear in the string. Once a letter is used in a submitted word, it cannot be used in subsequent resubmissions by the same student. If a student used fox they would have **dgetikbvuaa** left to play with.
 4. A word has to be a valid English word, consider how this would be validated.
 5. When there are no characters left in the string, or the student chooses to end the test, the system will show them their score, and if there were any valid words remaining in the string.
 6. The game maintains the top ten highest-scoring submissions (words and score). Anyone using the system should be able to request this list.
